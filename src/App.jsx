@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import InputSection from './components/InputSection';
 import SummarySection from './components/SummarySection';
+import FlashcardSection from './components/FlashcardSection';
 
 function App() {
   const [studyData, setStudyData] = useState(null);
@@ -21,10 +22,8 @@ function App() {
         content
       });
       
-      // Parse the response data
       const data = response.data;
       
-      // Basic sanity check to ensure the payload conforms to requirements
       if (!data || typeof data !== 'object') {
         throw new Error('Malformed response. The server did not return a valid study kit object.');
       }
@@ -77,6 +76,11 @@ function App() {
           <div className="w-full flex flex-col items-center animate-slide-up">
             {/* Core Summary Overview Section */}
             <SummarySection title={studyData.title} summary={studyData.summary} />
+            
+            {/* Interactive Flashcard Stack */}
+            {studyData.flashcards && studyData.flashcards.length > 0 && (
+              <FlashcardSection flashcards={studyData.flashcards} />
+            )}
             
             {/* Debugging Payload Preview */}
             <div className="mt-8 w-full max-w-3xl rounded-xl border border-obsidian-850 bg-obsidian-900/10 p-6 text-left">
