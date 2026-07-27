@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import InputSection from './components/InputSection';
@@ -13,17 +14,19 @@ function App() {
     setError(null);
     setStudyData(null);
 
-    // Mock API request for Milestone 4 verification
-    setTimeout(() => {
-      setLoading(false);
-      // For now, set a dummy state to verify the component callback
-      setStudyData({
-        title: mode === 'notes' ? 'Generated from Notes' : `Study Guide: ${content}`,
-        summary: ['Concept 1 summary', 'Concept 2 summary'],
-        flashcards: [],
-        quiz: []
+    try {
+      const response = await axios.post('http://localhost:3001/api/generate', {
+        mode,
+        content
       });
-    }, 2500);
+      setStudyData(response.data);
+    } catch (err) {
+      console.error('API Error:', err);
+      const msg = err.response?.data?.message || err.message || 'Failed to connect to the generator server.';
+      setError(msg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -48,12 +51,23 @@ function App() {
         {/* Study Notes Input Form */}
         <InputSection onSubmit={handleStudySubmit} loading={loading} />
 
-        {/* Temporary visualizer for studyData state */}
+        {/* Error reporting area */}
+        {error && (
+          <div className="mt-8 w-full max-w-3xl rounded-xl border border-red-500/20 bg-red-500/10 p-6 text-left animate-slide-up">
+            <h3 className="text-lg font-bold text-red-400 mb-2">Generation Error</h3>
+            <p className="text-sm text-obsidian-300">{error}</p>
+            <div className="mt-4 text-xs text-obsidian-500 font-mono">
+              Tip: Make sure you copied `.env.example` to `.env` in the root and defined a valid `GEMINI_API_KEY`, and that the backend server is running.
+            </div>
+          </div>
+        )}
+
+        {/* Temporary visualizer for live studyData state */}
         {studyData && (
           <div className="mt-8 w-full max-w-3xl rounded-xl border border-accent-cyan/30 bg-accent-cyan/5 p-6 text-left animate-slide-up">
-            <h3 className="text-lg font-bold text-accent-cyan mb-2">✓ Milestone 4 Connection Verification</h3>
+            <h3 className="text-lg font-bold text-accent-cyan mb-2">✓ Live AI Integration Verification</h3>
             <p className="text-sm text-obsidian-300">
-              Successfully triggered submission! Target Mode content captured. Mock response: 
+              Successfully received structured data from Gemini! Live payload preview:
             </p>
             <pre className="mt-4 overflow-x-auto rounded-lg bg-obsidian-900 p-4 text-xs font-mono text-obsidian-400">
               {JSON.stringify(studyData, null, 2)}
