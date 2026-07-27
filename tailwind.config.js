@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Outfit', 'Plus Jakarta Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+      },
       colors: {
         obsidian: {
           50: '#f4f4f6',
