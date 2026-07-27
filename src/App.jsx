@@ -9,23 +9,21 @@ import QuizSection from './components/QuizSection';
 import LoadingState from './components/LoadingState';
 import ErrorState from './components/ErrorState';
 import EmptyState from './components/EmptyState';
+import { validateStudyData } from './utils/validation';
 
 function App() {
   const [studyData, setStudyData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [lastSubmission, setLastSubmission] = useState(null); // Stores { mode, content } for retry functionality
+  const [lastSubmission, setLastSubmission] = useState(null);
 
-  // Ref to track the active AbortController to prevent stale request race conditions
   const abortControllerRef = useRef(null);
 
   const handleStudySubmit = async ({ mode, content }) => {
-    // Abort any existing active request
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
 
-    // Initialize new controller for this request
     const controller = new AbortController();
     abortControllerRef.current = controller;
 
@@ -43,27 +41,20 @@ function App() {
       
       const data = response.data;
       
-      // Strict JSON structure validations
-      if (!data || typeof data !== 'object') {
-        throw new Error('Received an empty or invalid structure from the generation engine.');
-      }
-      if (!data.title || !Array.isArray(data.summary) || !Array.isArray(data.flashcards) || !Array.isArray(data.quiz)) {
-        throw new Error('AI response structure was incomplete. Missing required study elements.');
-      }
+      // Perform strict validation check on JSON output format
+      validateStudyData(data);
       
       setStudyData(data);
     } catch (err) {
-      // If the request was cancelled, ignore error updates for the UI
       if (axios.isCancel(err)) {
         console.log('Stale request cancelled successfully:', content);
         return;
       }
       
-      console.error('Generation Error details:', err);
-      const msg = err.response?.data?.message || err.message || 'An error occurred while communicating with the AI server.';
+      console.error('Validation/API Error:', err);
+      const msg = err.response?.data?.message || err.message || 'An error occurred while compiling study materials.';
       setError(msg);
     } finally {
-      // Only set loading to false if this request wasn't replaced by a newer controller
       if (abortControllerRef.current === controller) {
         setLoading(false);
       }
