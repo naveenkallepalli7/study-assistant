@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import InputSection from './components/InputSection';
 import SummarySection from './components/SummarySection';
 import FlashcardSection from './components/FlashcardSection';
+import QuizSection from './components/QuizSection';
 
 function App() {
   const [studyData, setStudyData] = useState(null);
@@ -80,6 +81,11 @@ function App() {
             {/* Interactive Flashcard Stack */}
             {studyData.flashcards && studyData.flashcards.length > 0 && (
               <FlashcardSection flashcards={studyData.flashcards} />
+            )}
+
+            {/* Interactive Knowledge Quiz */}
+            {studyData.quiz && studyData.quiz.length > 0 && (
+              <QuizSection quiz={studyData.quiz} />
             )}
             
             {/* Debugging Payload Preview */}
