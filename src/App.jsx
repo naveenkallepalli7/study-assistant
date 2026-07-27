@@ -3,6 +3,7 @@ import axios from 'axios';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import InputSection from './components/InputSection';
+import SummarySection from './components/SummarySection';
 
 function App() {
   const [studyData, setStudyData] = useState(null);
@@ -19,7 +20,16 @@ function App() {
         mode,
         content
       });
-      setStudyData(response.data);
+      
+      // Parse the response data
+      const data = response.data;
+      
+      // Basic sanity check to ensure the payload conforms to requirements
+      if (!data || typeof data !== 'object') {
+        throw new Error('Malformed response. The server did not return a valid study kit object.');
+      }
+      
+      setStudyData(data);
     } catch (err) {
       console.error('API Error:', err);
       const msg = err.response?.data?.message || err.message || 'Failed to connect to the generator server.';
@@ -62,16 +72,21 @@ function App() {
           </div>
         )}
 
-        {/* Temporary visualizer for live studyData state */}
+        {/* Render study kit sections if loaded */}
         {studyData && (
-          <div className="mt-8 w-full max-w-3xl rounded-xl border border-accent-cyan/30 bg-accent-cyan/5 p-6 text-left animate-slide-up">
-            <h3 className="text-lg font-bold text-accent-cyan mb-2">✓ Live AI Integration Verification</h3>
-            <p className="text-sm text-obsidian-300">
-              Successfully received structured data from Gemini! Live payload preview:
-            </p>
-            <pre className="mt-4 overflow-x-auto rounded-lg bg-obsidian-900 p-4 text-xs font-mono text-obsidian-400">
-              {JSON.stringify(studyData, null, 2)}
-            </pre>
+          <div className="w-full flex flex-col items-center animate-slide-up">
+            {/* Core Summary Overview Section */}
+            <SummarySection title={studyData.title} summary={studyData.summary} />
+            
+            {/* Debugging Payload Preview */}
+            <div className="mt-8 w-full max-w-3xl rounded-xl border border-obsidian-850 bg-obsidian-900/10 p-6 text-left">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-obsidian-400 mb-2">
+                Structured JSON State Output
+              </h3>
+              <pre className="overflow-x-auto rounded-lg bg-obsidian-950 p-4 text-xs font-mono text-obsidian-400 border border-obsidian-900">
+                {JSON.stringify(studyData, null, 2)}
+              </pre>
+            </div>
           </div>
         )}
       </main>
