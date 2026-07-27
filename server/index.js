@@ -56,9 +56,9 @@ Create:
 
   try {
     // Call the Gemini API endpoint
-    // We use gemini-1.5-flash as the standard fast and reliable model for general text/JSON tasks
+    // We use gemini-3.5-flash as the standard fast and reliable model for general text/JSON tasks
     const response = await axios.post(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`,
       {
         contents: [
           {
