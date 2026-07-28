@@ -121,9 +121,11 @@ AI tools were used during the development of this project. Specifically, an AI a
 ---
 
 ## Time Spent
-- **Total Time**: ~1 hour
-  - Initial structure & Tailwind configuration: 15 mins
-  - Layout framework & responsive tabs: 10 mins
-  - Express Proxy server & Axios calls: 15 mins
-  - 3D Flashcards & Quiz review dashboards: 15 mins
-  - Validators, Abort Controllers, & docs: 5 mins
+
+- **Total Time:** ~8 hours
+  - Project planning & setup: 45 mins
+  - UI development: 2 hours
+  - AI integration: 1.5 hours
+  - Interactive flashcards & quiz: 2 hours
+  - Error handling & testing: 1 hour
+  - Documentation & final polishing: 45 mins
