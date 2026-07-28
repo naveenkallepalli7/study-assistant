@@ -129,3 +129,9 @@ AI tools were used during the development of this project. Specifically, an AI a
   - Interactive flashcards & quiz: 2 hours
   - Error handling & testing: 1 hour
   - Documentation & final polishing: 45 mins
+
+ ## 🔗 Project Links
+
+- **🚀 Live Demo:** https://study-assistant-tau-five.vercel.app/
+- **🎥 Demo Recording:** https://drive.google.com/file/d/1gWqKpSNTiTayy1j6RzwnQexFcrNyhNO0/view?usp=sharing
+- **💻 GitHub Repository:** https://github.com/naveenkallepalli7/study-assistant
