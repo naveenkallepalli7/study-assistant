@@ -34,9 +34,10 @@ function App() {
 
     try {
       const response = await axios.post(
-        'http://localhost:3001/api/generate',
-        { mode, content },
-        { signal: controller.signal }
+  'https://study-assistant-api-acq5.onrender.com/api/generate',
+  { mode, content },
+  { signal: controller.signal }
+
       );
       
       const data = response.data;
