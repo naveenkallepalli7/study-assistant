@@ -117,6 +117,7 @@ AI tools were used during the development of this project. Specifically, an AI a
 ## Known Limitations
 - **Token Limits**: High volume notes inputs may hit the rate limits of the free tier Gemini API key.
 - **Plain Text Input**: The input area parses raw string formatting. Rich formats like PDF or DOCX must be copied and pasted as text.
+- The backend is hosted on Render's free tier, so the first request after inactivity may take a short time while the service wakes up.
 
 ---
 
